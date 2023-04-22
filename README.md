@@ -1,1 +1,1 @@
-Tic-Tac-Toe game with playing feild, 2 players 
+Tic-Tac-Toe game with playing field, 2 players 
