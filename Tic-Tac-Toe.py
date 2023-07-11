@@ -32,16 +32,25 @@ class Game:
 
     def check_field(self, lst):
         lst1 = [[lst[j][i] for j in range(3)] for i in range(3)]
+        lst2 = [lst[i][i] for i in range(3)]
+        lst3 = [lst[i - 1][-i] for i in range(1, 4)]
+        draw = all(i.count('*') == 0 for i in lst)
         for i in lst:
-            if i.count('O') == 3:
-                return 'O'
+            if i.count('0') == 3:
+                return '0'
             if i.count('X') == 3:
                 return 'X'
         for i in lst1:
-            if i.count('O') == 3:
-                return 'O'
+            if i.count('0') == 3:
+                return '0'
             if i.count('X') == 3:
                 return 'X'
+        if lst2.count('0') == 3 or lst3.count('0') == 3:
+            return '0'
+        elif lst2.count('X') == 3 or lst3.count('X') == 3:
+            return 'X'
+        if draw:
+            return 'Draw'
         return None
 
     def play(self):
@@ -69,19 +78,30 @@ class Game:
 
     def win(self):
         n = self.check_field(self.field)
-        if n is not None:
+        if n is not None and n != 'Draw':
             return f'Победил(-а) {n}'
+        elif n == 'Draw':
+            return f'У нас ничья!'
 
 
 def want_play():
     player1 = Player('X')
-    player2 = Player('O')
+    player2 = Player('0')
+    print('''Добро пожаловать в игру Крестики-нолики! 
+Правила игры: побеждает игрок, которому удается занять три позиции подряд по вертикали/горизонтали/диагонали.
+В случае невозможности занять три такие позиции, объявляется ничья.
+Для игры необходимо ввести координаты на поле через пробел: номер строки, номер столбца.
+Пояснение: чтобы занять первую клетку, необходимо ввести координаты 1 1 и нажать Enter.
+Поле выглядит так:
+* * *
+* * *
+* * *
+''')
     game = Game(player1, player2)
     game.play()
     answer = input('Сыграем еще? Y/N: ')
-    while answer in 'yY':
+    while answer == 'Y':
         return want_play()
 
 
 want_play()
-
